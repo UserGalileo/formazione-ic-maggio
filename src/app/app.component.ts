@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {CounterComponent} from './counter.component';
 
+// Lifting state up
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [CounterComponent],
+  template: `
+    <p>Hello World!</p>
+
+    <app-counter [(value)]="count" />
+  `,
 })
 export class AppComponent {
-  title = 'formazione-ic-maggio';
+
+  count = 0;
 }
