@@ -1,17 +1,18 @@
-import {Component} from '@angular/core';
-import {CounterComponent} from './counter.component';
+import {Component, inject} from '@angular/core';
+import {HighlightDirective} from './directives/highlight.directive';
+import {LoggerService} from './services/logger.service';
+import {CounterComponent} from './components/counter.component';
 
-// Lifting state up
 @Component({
   selector: 'app-root',
-  imports: [CounterComponent],
+  imports: [HighlightDirective, CounterComponent],
   template: `
-    <p>Hello World!</p>
+    <p appHighlight>Hello World!</p>
 
-    <app-counter [(value)]="count" />
+    <app-counter />
   `,
 })
 export class AppComponent {
 
-  count = 0;
+  logger = inject(LoggerService);
 }
