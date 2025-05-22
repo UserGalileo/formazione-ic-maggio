@@ -1,5 +1,4 @@
 import {Component, model} from '@angular/core';
-import {LoggerService} from '../services/logger.service';
 
 // Componente Stateful (comandabile dall'esterno)
 @Component({

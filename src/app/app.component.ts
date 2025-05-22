@@ -1,18 +1,39 @@
 import {Component, inject} from '@angular/core';
-import {HighlightDirective} from './directives/highlight.directive';
-import {LoggerService} from './services/logger.service';
-import {CounterComponent} from './components/counter.component';
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [HighlightDirective, CounterComponent],
+  imports: [
+    RouterOutlet,
+    RouterLink
+  ],
   template: `
-    <p appHighlight>Hello World!</p>
+    <nav>
+      <ul>
+        <li><a routerLink="/counter">Counter</a></li>
+        <li><a routerLink="/users">Users</a></li>
+        <li><a routerLink="/todos">Todos</a></li>
+      </ul>
+    </nav>
 
-    <app-counter />
+    <hr>
+
+    <router-outlet />
   `,
+  styles: `
+    :host {
+      padding: 10px;
+      display: block;
+    }
+  `
 })
 export class AppComponent {
 
-  logger = inject(LoggerService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+
+  ngOnInit() {
+
+  }
+
 }
