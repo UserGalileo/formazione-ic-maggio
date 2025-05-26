@@ -2,7 +2,7 @@ import {Component, input, output} from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatSelect, MatOption} from '@angular/material/select';
 import {FormsModule} from '@angular/forms';
-import {TodosFilter} from '../models/todo';
+import {TodosFilter} from '../../models/todo';
 
 @Component({
   selector: 'app-todos-filter',

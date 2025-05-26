@@ -1,9 +1,18 @@
-import { Routes } from '@angular/router';
+import {CanActivateFn, Routes} from '@angular/router';
 import {CounterComponent} from './components/counter.component';
-import {UsersComponent} from './components/users.component';
-import {TodosComponent} from './components/todos.component';
-import {UserComponent} from './components/user.component';
+import {LoggerService} from './services/logger.service';
 
+// Guard - Injection Context
+export const adminGuard: CanActivateFn = () => {
+  console.log('admin guard');
+  return true;
+}
+
+// CanActivate: Se l'utente può vedere la pagina
+// CanActivateChild: Se l'utente può vedere la pagina E i suoi figli
+// CanLoad: Se il chunk va caricato
+// CanMatch: La rotta è valida?
+// CanDeactivate: L'utente può lasciare la pagina?
 
 export const routes: Routes = [
   {
@@ -12,15 +21,12 @@ export const routes: Routes = [
   },
   {
     path: 'users',
-    component: UsersComponent,
-  },
-  {
-    path: 'users/:userId',
-    component: UserComponent
+    loadChildren: () => import('./features/users/users.routes')
   },
   {
     path: 'todos',
-    component: TodosComponent,
+    loadChildren: () => import('./features/todos/todos.routes'),
+    canMatch: [adminGuard],
   },
   {
     path: '',

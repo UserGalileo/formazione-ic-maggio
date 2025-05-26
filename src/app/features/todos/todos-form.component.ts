@@ -1,4 +1,4 @@
-import {Component, output} from '@angular/core';
+import {Component, model, output} from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
@@ -20,12 +20,12 @@ import {FormsModule} from '@angular/forms';
 })
 export class TodosFormComponent {
 
-  todoText = '';
+  todoText = model('');
 
-  addTodo = output<string>();
+  addTodo = output<void>();
 
   add() {
-    this.addTodo.emit(this.todoText);
-    this.todoText = '';
+    this.addTodo.emit();
+    this.todoText.set('');
   }
 }

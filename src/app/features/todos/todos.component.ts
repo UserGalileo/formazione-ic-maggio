@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {TodosFilterComponent} from './todos-filter.component';
 import {TodosFormComponent} from './todos-form.component';
 import {TodosListComponent} from './todos-list.component';
-import {Todo, TodosFilter} from '../models/todo';
+import {Todo, TodosFilter} from '../../models/todo';
+import {CanLeave} from './todos.routes';
 
 @Component({
   selector: 'app-todos',
@@ -17,7 +18,8 @@ import {Todo, TodosFilter} from '../models/todo';
     />
 
     <app-todos-form
-        (addTodo)="onAddTodo($event)"
+        [(todoText)]="todoText"
+        (addTodo)="onAddTodo()"
     />
 
     <app-todos-list
@@ -25,13 +27,14 @@ import {Todo, TodosFilter} from '../models/todo';
         (removeTodo)="onRemoveTodo($event)"
         (toggleCompleted)="onToggleCompleted($event)"
     />
-  `
+  `,
 })
-export class TodosComponent {
+export class TodosComponent implements CanLeave {
 
   // Stati
   todos: Todo[] = [];
   filter: TodosFilter = 'ALL';
+  todoText = '';
 
   // Stato derivato
   get filteredTodos() {
@@ -44,8 +47,8 @@ export class TodosComponent {
     return this.todos;
   }
 
-  onAddTodo(text: string) {
-    const newTodo = { id: '' + Math.random(), text, completed: false };
+  onAddTodo() {
+    const newTodo = { id: '' + Math.random(), text: this.todoText, completed: false };
     this.todos = [ ...this.todos, newTodo ];
   }
 
@@ -60,6 +63,13 @@ export class TodosComponent {
       }
       return todo;
     });
+  }
+
+  canLeave() {
+    if (this.todoText) {
+      return confirm('Are you sure you want to leave?');
+    }
+    return true;
   }
 }
 

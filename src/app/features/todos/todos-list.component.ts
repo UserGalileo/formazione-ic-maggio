@@ -3,7 +3,7 @@ import {MatList, MatListItem, MatListSubheaderCssMatStyler} from '@angular/mater
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {Todo} from '../models/todo';
+import {Todo} from '../../models/todo';
 import {FormsModule} from '@angular/forms';
 
 @Component({

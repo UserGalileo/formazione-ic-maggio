@@ -1,39 +1,50 @@
-import {Component, inject} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {
+  Component,
+  viewChild,
+  ElementRef
+} from '@angular/core';
+import {CounterComponent} from './components/counter.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
-    RouterLink
+    FormsModule,
+    CounterComponent,
   ],
   template: `
-    <nav>
-      <ul>
-        <li><a routerLink="/counter">Counter</a></li>
-        <li><a routerLink="/users">Users</a></li>
-        <li><a routerLink="/todos">Todos</a></li>
-      </ul>
-    </nav>
+<!--    <nav>-->
+<!--      <ul>-->
+<!--        <li><a routerLink="/counter">Counter</a></li>-->
+<!--        <li><a routerLink="/users">Users</a></li>-->
+<!--        <li><a routerLink="/todos">Todos</a></li>-->
+<!--      </ul>-->
+<!--    </nav>-->
 
-    <hr>
-
-    <router-outlet />
+    <app-counter />
   `,
   styles: `
     :host {
       padding: 10px;
       display: block;
     }
-  `
+  `,
 })
 export class AppComponent {
 
-  router = inject(Router);
-  route = inject(ActivatedRoute);
+  counter = viewChild(CounterComponent, { read: ElementRef });
 
-  ngOnInit() {
+  constructor() {}
 
+  ngAfterViewInit() {
+    console.log(this.counter());
   }
-
 }
+
+// - signal ------- Stati
+// - computed ----- Stati derivati
+// - effect ------- Effetti
+// - input
+// - model
+// - viewChild, viewChildren
+// - contentChild, contentChildren

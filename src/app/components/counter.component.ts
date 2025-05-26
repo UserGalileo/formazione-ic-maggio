@@ -1,10 +1,9 @@
-import {Component, model} from '@angular/core';
+import {Component, signal, computed} from '@angular/core';
 
-// Componente Stateful (comandabile dall'esterno)
 @Component({
   selector: 'app-counter',
   template: `
-    <p>{{ value() }}</p>
+    <p>Count: {{ doubleCount() }}</p>
 
     <button (click)="inc()">+</button>
     <button (click)="dec()">-</button>
@@ -12,13 +11,18 @@ import {Component, model} from '@angular/core';
 })
 export class CounterComponent {
 
-  value = model(0);
+  // Stato
+  count = signal(0);
+
+  // Stato derivato
+  doubleCount = computed(() => this.count() * 2);
 
   inc() {
-    this.value.update(n => n + 1);
+    this.count.update(n => n + 1);
   }
 
   dec() {
-    this.value.update(n => n - 1);
+    this.count.update(n => n - 1);
   }
+
 }

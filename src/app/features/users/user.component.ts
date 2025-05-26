@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {User} from '../models/user';
+import {User} from '../../models/user';
 import {HttpClient} from '@angular/common/http';
 import {JsonPipe} from '@angular/common';
 
