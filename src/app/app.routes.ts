@@ -1,6 +1,5 @@
 import {CanActivateFn, Routes} from '@angular/router';
 import {CounterComponent} from './components/counter.component';
-import {LoggerService} from './services/logger.service';
 
 // Guard - Injection Context
 export const adminGuard: CanActivateFn = () => {
