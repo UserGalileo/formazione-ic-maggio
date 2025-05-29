@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {TodosFilterComponent} from './todos-filter.component';
 import {TodosFormComponent} from './todos-form.component';
 import {TodosListComponent} from './todos-list.component';
@@ -24,7 +24,7 @@ import {CanLeave} from './todos.routes';
     />
 
     <app-todos-list
-        [todos]="filteredTodos"
+        [todos]="filteredTodos()"
         (removeTodo)="onRemoveTodo($event)"
         (toggleCompleted)="onToggleCompleted($event)"
     />
@@ -33,41 +33,41 @@ import {CanLeave} from './todos.routes';
 export class TodosComponent implements CanLeave {
 
   // Stati
-  todos: Todo[] = [];
-  filter: TodosFilter = 'ALL';
-  todoText = '';
+  todos = signal<Todo[]>([]);
+  filter = signal<TodosFilter>('ALL');
+  todoText = signal('');
 
   // Stato derivato
-  get filteredTodos() {
-    if (this.filter === 'COMPLETED') {
-      return this.todos.filter(todo => todo.completed);
+  filteredTodos = computed(() => {
+    if (this.filter() === 'COMPLETED') {
+      return this.todos().filter(todo => todo.completed);
     }
-    if (this.filter === 'ACTIVE') {
-      return this.todos.filter(todo => !todo.completed);
+    if (this.filter() === 'ACTIVE') {
+      return this.todos().filter(todo => !todo.completed);
     }
-    return this.todos;
-  }
+    return this.todos();
+  });
 
   onAddTodo() {
-    const newTodo = { id: '' + Math.random(), text: this.todoText, completed: false };
-    this.todos = [ ...this.todos, newTodo ];
+    const newTodo = { id: '' + Math.random(), text: this.todoText(), completed: false };
+    this.todos.set([ ...this.todos(), newTodo ]);
   }
 
   onRemoveTodo(id: Todo['id']) {
-    this.todos = this.todos.filter(todo => todo.id !== id);
+    this.todos.set(this.todos().filter(todo => todo.id !== id));
   }
 
   onToggleCompleted(id: Todo['id']) {
-    this.todos = this.todos.map(todo => {
+    this.todos.set(this.todos().map(todo => {
       if (todo.id === id) {
         return { ...todo, completed: !todo.completed };
       }
       return todo;
-    });
+    }));
   }
 
   canLeave() {
-    if (this.todoText) {
+    if (this.todoText()) {
       return confirm('Are you sure you want to leave?');
     }
     return true;

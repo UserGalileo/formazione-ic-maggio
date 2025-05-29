@@ -1,7 +1,8 @@
 import {Component, inject, input} from '@angular/core';
-import {User} from '../../models/user';
 import {HttpClient} from '@angular/common/http';
 import {JsonPipe} from '@angular/common';
+import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +12,7 @@ import {JsonPipe} from '@angular/common';
   template: `
     User {{ userId() }} <br>
 
-    {{ user | json }}
+    {{ user() | json }}
   `
 })
 export class UserComponent {
@@ -20,11 +21,8 @@ export class UserComponent {
 
   userId = input.required<string>();
 
-  user: User | null = null;
-
-  ngOnChanges() {
-    this.http.get<User>('https://jsonplaceholder.typicode.com/users/' + this.userId()).subscribe(user => {
-      this.user = user;
-    });
-  }
+  // Stato derivato asincrono
+  user = toSignal(toObservable(this.userId).pipe(
+    switchMap(id => this.http.get(`https://jsonplaceholder.typicode.com/users/${id}`))
+  ));
 }
